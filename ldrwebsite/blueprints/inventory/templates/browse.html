@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block header %}
+<h2 id="page-title">All accessions in the LDR</h2>
+{% endblock %}
+
+{% block inventory_list %}
+
+    {% for inventory in inventory_list %}
+        <dl>
+            <dt>
+                <a href="{{ url_for("inventory.get_an_inventory", accession_id=inventory) }}">{{ inventory_list[inventory]['identifier'] }}</a>
+                has {{ inventory_list[inventory]['numfiles'] }} files(s)
+            </dt>
+        </dl>
+    {% endfor %}
+
+{% endblock %}

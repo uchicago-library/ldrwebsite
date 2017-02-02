@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block navigation_links %}
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for("inventory.list_inventories") }}">Back to Accessions List</a>
+	</li>
+	<li>
+       	<a id="accessions-page-link" class="nav-link" href="{{ url_for("inventory.get_an_inventory", accession_id=accession_id) }}">Back to Accessions Page</a>
+	</li>
+{% endblock %}
+
+{% block header %}
+    <h2 id="page-title">{{ identifier }}</h2>
+{% endblock %}
+
+{% block inventory_list %}
+<dl>
+    {% for file in file_list %}
+        <dt>{{ file["name"] }}</dt>
+        <dd>
+            <a href="{{ file["content"] }}">content</a>&nbsp;
+            <a href="{{ file["premis"] }}">premis</a>&nbsp;
+            <a href="{{ url_for("restriction_change.make_a_change", accessionid=file["accessionid"], objid=file["objid"]) }}">change restriction</a>
+        </dd>
+    {% endfor %}
+</dl>
+{% endblock %}

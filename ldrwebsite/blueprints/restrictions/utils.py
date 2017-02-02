@@ -19,6 +19,7 @@ def new_rights_extension(extension_id, restricted_object_id, restriction_code,
                                  restriction should be considered active or not
     5. restriction_comment (str): an optional string describing what this restriction is about
     """
+    print(restriction_code)
     rights_ext_id = RightsExtensionIdentifier("DOI", extension_id)
     restricted_object = RestrictedObjectIdentifier("DOI", restricted_object_id)
     restrict = Restriction(restriction_code, restriction_active, restricted_object)
@@ -29,14 +30,12 @@ def new_rights_extension(extension_id, restricted_object_id, restriction_code,
     rights_extension.set_field("restriction", restrict)
     return rights_extension
 
-def get_ldr_object_filepath(accessionid, objid, root_path=None):
+def get_ldr_object_filepath(accessionid, objid, root_path):
     """a function to return a valid path to a ldr premis live PREMIS record
     """
-    if not root_path or not exists(root_path):
-        root_path = "/disk/0/repositoryCode/livePremis/objects"
     accession_path = str(identifier_to_path(accessionid))
     objid_path = str(identifier_to_path(objid))
-    path_to = join(root_path[0], accession_path,
+    path_to = join(root_path, accession_path,
                    "arf/pairtree_root", objid_path, "arf", "premis.xml")
     return path_to
 
@@ -53,7 +52,7 @@ def extract_record_rights(a_record):
     """a function retrieve the rights information from a particular PREMIS record
     """
     current_restrictions = []
-    current_rights = precord.get_rights_list()
+    current_rights = a_record.get_rights_list()
     for right in current_rights:
         extensions = right.get_rightsExtension()
         for extension in extensions:

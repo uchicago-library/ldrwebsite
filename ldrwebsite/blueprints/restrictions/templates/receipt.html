@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% block header %}
+<p>
+    The restriction for object {{ objectChanged }} was changed from {{ oldRestriction }} to {{ newRestriction }}
+</p>
+
+{% if restrictionComment %}
+<p>
+    The reason for this change was:
+</p>
+
+<p>
+    {{ restrictionComment }}
+</p>
+{% endif %}
+
+{% endblock %}
