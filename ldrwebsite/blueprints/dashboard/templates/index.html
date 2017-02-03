@@ -4,23 +4,49 @@
     <p>
         These are accessions that have recently been received by the LDR.
     </p>
+    <dl>
+    {% for item in stages %}
+        <dt>{{ item }}</dt>
+    {% endfor %}
+    </dl>
+
+
 </div>
 <div class="col-sm-3">
     <h3>Transferring</h3>
     <p>
         These are accessions that are in the process of being moved into the longterm storage environment.
     </p>
+    <dl>
+    {% for item in transfers %}
+        <dt>{{ item }}</dt>
+    {% endfor %}
+    </dl>
+  
 </div>
 <div class="col-sm-3">
     <h3>Pending</h3>
     <p>
         These are accessions that are in the longterm storage environment but have not had permanent URLS created.
     </p>
+    <dl>
+    {% for item in pending %}
+        {% for i in item %}
+            <dt>{{ i }}</dt>
+        {% endfor %}
+    {% endfor %}
+    </dl>
+
 </div>
 <div class="col-sm-3">
     <h3>Archives</h3>
     <p>
         These are accessions that are in the longterm storage environment and have permanent URLS for 
     </p>
+    <dl>
+    {% for item in inventoried %}
+        <dt><a href="{{ url_for("inventory.get_an_inventory", accession_id=item) }}">{{ item }}</a></dt>
+    {% endfor %}
+    </dl>
 </div>
 {% endblock %}
