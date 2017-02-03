@@ -1,0 +1,25 @@
+{% block navigation_links %}
+    <li class="nav-item">
+		<a class="nav-link" href="index.html">Back to Accessions List</a>
+	</li>
+{% endblock %}
+
+{% block header %}
+
+<dl>
+{% for page in inventory_info.pages %}
+    <dt>
+        <a href="{{ url_for("inventory.get_an_inventory_page", accession_id=accessionid, page_num=page) }}">
+            Page {{ page }}
+        </a>
+    </dt>
+{% endfor %}
+</dl>
+
+{% for record in information.records %}
+    <pre>
+        {{ record }}
+    </pre>
+{% endfor %}
+
+{% endblock %}

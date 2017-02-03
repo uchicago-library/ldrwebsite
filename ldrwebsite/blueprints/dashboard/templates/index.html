@@ -1,0 +1,26 @@
+{% extends "base.html" %} {% block header %}
+<div class="col-sm-3">
+    <h3>Stages</h3>
+    <p>
+        These are accessions that have recently been received by the LDR.
+    </p>
+</div>
+<div class="col-sm-3">
+    <h3>Transferring</h3>
+    <p>
+        These are accessions that are in the process of being moved into the longterm storage environment.
+    </p>
+</div>
+<div class="col-sm-3">
+    <h3>Pending</h3>
+    <p>
+        These are accessions that are in the longterm storage environment but have not had permanent URLS created.
+    </p>
+</div>
+<div class="col-sm-3">
+    <h3>Archives</h3>
+    <p>
+        These are accessions that are in the longterm storage environment and have permanent URLS for 
+    </p>
+</div>
+{% endblock %}

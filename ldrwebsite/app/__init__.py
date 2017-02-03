@@ -5,10 +5,9 @@ from os.path import abspath, relpath
 
 from ldrwebsite.blueprints.inventory import INVENTORY
 from ldrwebsite.blueprints.restrictions import RESTRICTION_CHANGE
+from ldrwebsite.blueprints.dashboard import DASHBOARD
 
 # from blueprints.accessions import ACCESSIONS
-# from blueprints.dashboard import DASHBOARD
-
 # from blueprints.stages import STAGES
 
 def retrieve_resource_string(resource_path, pkg_name=None):
@@ -36,4 +35,5 @@ for n_item in CONFIG["CONFIG"]:
 
 APP.register_blueprint(INVENTORY)
 APP.register_blueprint(RESTRICTION_CHANGE)
+APP.register_blueprint(DASHBOARD)
 APP.run()

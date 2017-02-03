@@ -1,16 +1,29 @@
 from flask import Blueprint, render_template
 
-DASHBOARD = Blueprint("restriction_change", __name__)
+from .controls import SummarizeState, SummarizeAccession, InventorySummarizer
 
-@DASHBOARD.route("/restriction/select")
+DASHBOARD = Blueprint("dashboard", __name__, template_folder="./templates")
+
+@DASHBOARD.route("/dashboard", methods=["GET"])
 def select():
-    """a function to allow users to enter an accession id and an object id to change restricitons
+    """a function to allow users to browse the archives and stages in the ldr
     """
-    return render_template("index.html")
+    from flask import current_app
+    summary = SummarizeState(current_app.config.get("LONGTERMSTORAGE_PATH"),
+                             current_app.config.get("STAGING_PATH"),
+                             current_app.config.get("LIVEPREMIS_PATH"))
+    return render_template("index.html", stages=summary.staged,
+                           inventoried=summary.inventoried,
+                           pending=summary.non_inventoried)
 
-@DASHBOARD.route("/restriction/change/<string:accession_id>")
+@DASHBOARD.route("/dashbord/<string:accessionid>", methods=["GET"])
 def change(accessionid):
-    """a function to allow users to select a new restriction for a particular object in the ldr
+    """a function to allow users to view details about a particular archive
     """
-    return render_template("record.html")
-
+    from flask import current_app
+    record_info = SummarizeAccession(current_app.config.get("LONGTERMSTORAGE_PATH"),
+                                     accessionid)
+    inventory_info = InventorySummarizer(current_app.config.get("INVENTORY_PATH"),
+                                         accessionid)
+    return render_template("record.html", information=record_info,
+                           inventory=inventory_info)
