@@ -7,6 +7,8 @@ from .blueprints.inventory import INVENTORY
 from .blueprints.restrictions import RESTRICTION_CHANGE
 from .blueprints.dashboard import DASHBOARD
 from .blueprints.acquisitions import ACQUISITIONS
+from .blueprints.restricted_resolver import RESTRICTED_RESOLVER
+from .blueprints.unrestricted_resolver import UNRESTRICTED_RESOLVER
 
 from blueprints.accessions import ACCESSIONS
 from blueprints.stages import STAGES
@@ -38,4 +40,6 @@ APP.register_blueprint(INVENTORY)
 APP.register_blueprint(RESTRICTION_CHANGE)
 APP.register_blueprint(DASHBOARD)
 APP.register_blueprint(ACQUISITIONS)
+APP.register_blueprint(UNRESTRICTED_RESOLVER)
+APP.register_blueprint(RESTRICTED_RESOLVER)
 APP.run()
