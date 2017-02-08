@@ -1,21 +1,3 @@
-<<<<<<< HEAD
- {% block navigation_links %}
-{% endblock %} {% block header %}
-
-<div class="col-sm-3">
-    <h3>Stages</h3>
-</div>
-<div class="col-sm-3">
-    <h3>Transferring</h3>
-</div>
-<div class="col-sm-3">
-    <h3>Pending</h3>
-</div>
-<div class="col-sm-3">
-    <h3>Archives</h3>
-</div>
-
-=======
 {% extends "base.html" %} {% block header %}
 <div class="col-sm-3">
     <h3>Stages</h3>
@@ -41,5 +23,10 @@
         These are accessions that are in the longterm storage environment and have permanent URLS for 
     </p>
 </div>
->>>>>>> 0a557002f7c4b0bf3f52911a48e04479d9a0d944
+{% endblock %}
+
+{% block navigation_links %}
+    <li class="nav-item">
+        <a class="nav-link" href="index.html">Back to Accessions List</a>
+    </li>
 {% endblock %}

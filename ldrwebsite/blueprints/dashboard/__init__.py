@@ -11,7 +11,7 @@ def select():
     from flask import current_app
     summary = SummarizeState(current_app.config.get("LONGTERMSTORAGE_PATH"),
                              current_app.config.get("STAGING_PATH"),
-                             current_app.config.get("LIVEPREMIS_PATH"))
+                             current_app.config.get("INVENTORY_PATH"))
     return render_template("index.html", stages=summary.staged,
                            inventoried=summary.inventoried,
                            pending=summary.non_inventoried)

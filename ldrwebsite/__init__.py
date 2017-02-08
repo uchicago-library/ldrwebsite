@@ -36,6 +36,6 @@ for n_item in CONFIG["CONFIG"]:
 
 #APP.register_blueprint(INVENTORY)
 #APP.register_blueprint(RESTRICTION_CHANGE)
-#APP.register_blueprint(DASHBOARD)
+APP.register_blueprint(DASHBOARD)
 APP.register_blueprint(ACQUISITIONS)
 APP.run()

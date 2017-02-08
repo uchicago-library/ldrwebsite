@@ -12,6 +12,8 @@ class SummarizeState(object):
         self.inventoried = self._find_inventoried(invp)
         self.non_inventoried = self._find_difference(self._find_archives(ltsp),
                                                      self._find_inventoried(invp))
+        print(ltsp)
+        print(invp)
 
     def _find_stages(self, stage_path):
         output = []
