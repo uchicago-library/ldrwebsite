@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LDR Acquisitions</title>
+
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="static/jquery-ui/jquery-ui.css" />
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <p class="navbar-brand" href="index.html">
+                    LDR Acquisitions
+                </p>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#" id="start-over">Reset</a>
+                    </li>
+                    <li>
+                        <a id="clear-data" href="form.html?action=acquisition">Create a New Acquisition</a>
+                    </li>
+                    <li>
+                        <a href="list.html?action=acquisition">List Acquisitions</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-lg-7" id="form-div">
+        </div>
+        <div class="col-lg-5">
+            <div class="row">
+                <h3>Donors
+                </h3>
+                <div id="donors-list">
+                </div>
+            </div>
+            <div class="row">
+                <h3>Sources
+                </h3>
+                <div id="sources-list">
+                </div>
+	    </div>
+	    <div class="row">
+                <h3>Restrictions
+                </h3>
+                <div id="restriction-list">
+                </div>
+            </div>
+            <div class="row">
+                <h3>Physical Media
+                </h3>
+                <div id="physmedia-list">
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script type="text/javascript" src="static/jquery/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" src="static/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="static/misc/validator.js"></script>
+    <script type="text/javascript" src="static/recordPages.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LDR Acquisitions</title>
+    <link rel="stylesheet" type="text/css" href="static/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheeT" type="text/css" href="static/misc/bootstrap-toggle-master/css/bootstrap-toggle.css" />
+    <link rel="stylesheet" type="text/css" href="static/jquery-ui/jquery-ui.css" />
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <p class="navbar-brand" href="index.html">
+                    LDR Acquisitions
+                </p>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="#" id="start-over">Reset</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-lg-7">
+            <form method="post" id="accession-form" data-toggle="validator" role="form" action="accession.html" form="form-horizontal">
+                <fieldset>
+                    <legend>Creating an Accession</legend>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="accession-identifier">Accession Identifier</label>
+                                <input pattern="\d{4}-\d{3}" title="must look similar to 2001-001" type="text" class="form-control" name="accession-identifier" class="form-control" placeholder="2001-001" required/>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="EADID">EAD Identifier</label>
+                                <input pattern="ICU.SPCL.\w{3,}" title="must look like ICU.SPCL.FOO" type="text" class="form-control" name="EADID" class="form-control" placeholder="ICU.SPCL.FOO" required/>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="collection-title">
+                                    Collection Title
+                                </label>
+                                <input type="text" name="collection-title" class="form-control" required/>
+                                </select>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="start-span-date">Span Date</label>
+                                <input pattern="[\d{2}]?[/]?\d{4}-[\d{2}]?[/]?\d{4}" title="must look like 1980-1999 or 01/1980-12/1980" type="text" class="form-control" name="span-date" class="form-control" placeholder="1980-1999" required/>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="summary">Description</label>
+                                <textarea class="form-control" name="summary" placeholder="This accession contains video files and Word Perfect files retrieved as part of the floppy disk project" required></textarea>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="access">Should the public access it?</label>
+                                <input type="checkbox" name="access" class="form-control" />
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="discover">Should the public discover it?</label>
+                                <input type="checkbox" name="discover" class="form-control" />
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <div id="receipt-letter-required-errors">
+                                </div>
+                                <label for="receipt-letter-required">Receipt Letter Required</label>
+                                <input type="checkbox" name="receipt-letter-required" class="form-control" />
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <div id="receipt-letter-sent-errors"></div>
+                                <label for="receipt-letter-sent">Receipt Letter Sent</label>
+                                <input type="text" name="receipt-letter-sent" class="form-control" />
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="gift-acknowledgement-required">Gift Acknowledgement Required</label>
+                                <input type="checkbox" name="gift-acknowledgement-required" class="form-control" />
+                                </label>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <div id="gift-acknowledgement-received-errors"></div>
+                                <label for="gift-acknowledgement-received">Gift Acknowledgement Received</label>
+                                <input type="text" name="gift-acknowledgement-received" class="form-control" />
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="fiscal-year">Fiscal Year</label>
+                                <input pattern="\d{4}[-]\d{4}" title="must be a range of 2 years that looks like 2001-2002" type="text" class="form-control" name="fiscal-year" placeholder="2006-2007" required/>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="organization">Organization</label>
+                                <input type="text" class="form-control" name="organization-name" placeholder="Special Collections" />
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="ownership-status">Ownership Status</label>
+                                <input type="text" pattern="Owned|Deposit|Other" title="This field must be either Owned or Deposit or Other" name="ownership-status" class="form-control" placeholder="Owned or Deposit or Other" required/>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="origin-description">Origin Description</label>
+                                <textarea type="text" name="origin-description" class="form-control" placeholder="Describe the origin of the material" required></textarea>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="rights">Rights</label>
+                                <textarea type="text" name="rights" class="form-control" placeholder="Describe the legal rights that correspoind to the material" required></textarea>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="accession-access-description">Access Description</label>
+                                <textarea type="text" name="access-description" class="form-control" placeholder="Describe the access restrictions for the material"></textarea>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="administrative-comment">Administrative Comment</label>
+                                <textarea type="text" name="administrative-comment" class="form-control" placeholder="Write anything that you think that the DAS should know"></textarea>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="date-files-received">Files Received Date</label>
+                                <input type="text" class="form-control" name="date-files-received" required/>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="date-materials-received">Materials Received Date</label>
+                                <input type="text" class="form-control" name="date-materials-received" required/>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <button name="save-accession" type="submit" class="btn btn-primary btn-sm">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="col-lg-3">
+            <div class="row">
+                <h3>Donors
+                    <a href="donor.html" type="button" class="btn btn-primary btn-xs">
+                        add
+                    </a>
+                </h3>
+                <dl id="donors-list">
+                </dl>
+            </div>
+            <div class="row">
+                <h3>Sources
+                    <a href="source.html" role="button" class="btn btn-primary btn-xs">
+                        add
+                    </a>
+                </h3>
+                <dl id="sources-list">
+                </dl>
+                <h3>Restrictions
+                    <a href="restriction.html" role="button" class="btn btn-primary btn-xs">
+                          add
+                      </a>
+                </h3>
+                <dl id="restriction-list">
+                </dl>
+            </div>
+            <div class="row">
+                <h3>Physical Media
+                    <a href="physmedia.html" type="button" class="btn btn-primary btn-xs">
+                        add
+                    </a>
+                </h3>
+                <dl id="physmedia-list">
+                </dl>
+            </div>
+            <div class="row">
+                <h3>Mixed acquisition</h3>
+                <dl id="type-definition">
+                </dl>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p class="text-center">
+            &copy; University of Chicago, 2016
+        </p>
+    </footer>
+    <script type="text/javascript" src="static/jquery/jquery-3.0.0.js"></script>
+    <script type="text/javascript" src="static/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="static/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="static/misc/validator.js"></script>
+    <script type="text/javascript" src="static/misc/bootstrap-toggle-master/js/bootstrap-toggle.js"></script>
+    <script type="text/javascript" src="static/dataGenerators.js"></script>
+    <script type="text/javascript" src="static/ajax_commands.js"></script>
+    <script type="text/javascript" src="static/html_element_makers.js"></script>
+    <script type="text/javascript" src="static/misc.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+
+        $(function() {
+            var choice = localStorage.getItem('CurrentRecord');
+            console.log(choice);
+            localStorage.setItem("Source", '[]');
+            localStorage.setItem("Donor", '[]');
+            localStorage.setItem("Physical Media Information", '[]');
+            localStorage.setItem("Restriction Information", '[]');
+            var form = document.getElementById("accession-form");
+            form.setAttribute("action", "accession.html")
+            var data = JSON.parse(choice);
+            console.log(data);
+            var divIds = [{
+                name: "donors-list",
+                data: $.map(data.Donor, function(value, index) {
+                    return buildADataItem(value, "person", "donor");
+                })
+            }, {
+                name: "sources-list",
+                data: $.map(data.Source, function(value, index) {
+                    return buildADataItem(value, "person", "source");
+                })
+            }, {
+                name: "restriction-list",
+                data: $.map(data["Restriction Information"], function(value, index) {
+                    return buildADataItem(value, "restriction");
+                })
+            }, {
+                name: "physmedia-list",
+                data: $.map(data["Physical Media Information"], function(value, index) {
+                    return buildADataItem(value, "media");
+                })
+            }, {
+                name: "type-definition",
+                data: $.map(data["Mixed Acquisition"], function(value, index) {
+                    console.log(value);
+                    return buildADataItem(value, "type");
+                })
+            }];
+            var inputsToFill = [{
+                name: "accession-identifier",
+                data: $.map(data['Accession Identifier'], function(value, index) {
+                    return buildADataItem(value, "accessionid");
+                })
+            }, {
+                name: "collection-title",
+                data: $.map(data["Collection Title"], function(value, index) {
+                    return buildADataItem(value, "collection");
+                })
+            }, {
+                name: "organization-name",
+                data: $.map(data["Organization Name"], function(value, index) {
+                    var f = buildADataItem(value, "organization");
+                    return f;
+                })
+            }, {
+                name: "origin-description",
+                data: $.map(data['Origin Description'], function(value, index) {
+                    return buildADataItem(value, "origin");
+                })
+            }, {
+                name: "summary",
+                data: $.map(data["Summary"], function(value, index) {
+                    return buildADataItem(value, "summary");
+                })
+            }, {
+		name:"span-date",
+		data: $.map(data["Span Date"], function(value, index) {
+		    console.log("span-date");
+		    console.log(value);
+		    return buildADataItem(value, "span-date");
+		 })
+		}, {
+                name: "admin-comments",
+                data: $.map(data["Administrative Comment"], function(value, index) {
+                    return buildADataItem(value, "comment");
+                })
+            }, {
+                name: "gift-acknowledgement-required",
+                data: $.map(data["Gift Acknowledgement Required"], function(value, index) {
+                    return buildADataItem(value, "gift-ack-req");
+                })
+            }, {
+                name: "receipt-letter-required",
+                data: $.map(data["Receipt Letter Required"], function(value, index) {
+                    return buildADataItem(value, "receipt-letter-req");
+                })
+            }, {
+                name: "receipt-letter-sent",
+                data: $.map(data["Receipt Letter Sent"], function(value, index) {
+                    return buildADataItem(value, "receipt-letter-sent");
+                })
+            }, {
+                name: "gift-acknowledgement-received",
+                data: $.map(data["Gift Acknowledgement Received"], function(value, index) {
+                    return buildADataItem(value, "gift-ack-recv");
+                })
+            }];
+            var inputsOnPage = document.getElementsByClassName("form-control");
+            $.each(inputsToFill, function(index, value) {
+
+                var name_value = value.name;
+                var attr = "name=" + value.name;
+                var input = $('*[' + attr + ']');
+                $.each(value.data, function(subindex, subvalue) {
+                    var inputValue = subvalue.dt_text;
+                    input.val(inputValue);
+                    addADataObjectToLocalStorage(subvalue);
+                });
+            });
+            $.each(divIds, function(index, value) {
+                var div = document.getElementById(value.name);
+                $.each(value.data, function(subindex, subvalue) {
+                    var dt = document.createElement("dt");
+                    var dd = document.createElement("dd");
+                    var link = null;
+                    if (subvalue.category == 'source' || subvalue.category == 'donor') {
+                        link = subvalue.category + '.html';
+                    } else if (subvalue.category == 'Restriction Information') {
+                        link = "restriction.html";
+                    } else if (subvalue.category == "Physical Media Information") {
+                        link = "physmedia.html";
+                    }
+                    //dt_edit_button = document.createElement("a");
+                    // dt_edit_button.setAttribute("class", "btn btn-primary btn-xs")
+                    // dt_edit_button.setAttribute("role", "button");
+                    // dt_edit_button.setAttribute("href", link+"?edit=true&n=" + subvalue.dt_text);
+                    // dt_edit_button.appendChild(document.createTextNode("edit"));
+                    // dt_delete_button = document.createElement("button");
+                    // dt_delete_button.setAttribute("class", "btn btn-warning btn-xs")
+                    // dt_delete_button.setAttribute("role", "button");
+                    // dt_delete_button.appendChild(document.createTextNode("delete"));
+                    // dt_delete_button.setAttribute("id", "delete-donor-" + subvalue.dt_text);
+                    dt.appendChild(document.createTextNode(subvalue.dt_text));
+                    //dt.appendChild(dt_edit_button);
+                    //dt.appendChild(document.createTextNode(" | "));
+                    //dt.appendChild(dt_delete_button);
+                    div.appendChild(dt);
+                    if (subvalue.dd_text != null) {
+                        dd.appendChild(document.createTextNode(subvalue.dd_text));
+                        div.appendChild(dd);
+                    }
+                    addADataObjectToLocalStorage(subvalue);
+                });
+            });
+        });
+
+
+        $(function() {
+            $("#accession-form").validator().on('submit', function(e) {
+                if (!e.isDefaultPrevented()) {
+                    var inputs = document.getElementById("acquisition-form")[0].getElementsByClassName('form-control');
+                    var n = postNewRecord(new Object());
+                    var newRecordId = n.responseJSON.data.record_identifier;
+                    var newObj = groupEverythingIntoOneObject(inputs, localStorage, 'AccessionRecord');
+                    console.log(newObj);
+                    for (key in newObj) {
+                        var fieldName = null;
+                        var valueObj = null;
+                        var currentValue = newObj[key];
+                        if (typeof(currentValue) == 'boolean') {
+                            fieldName = key + "0";
+                            valueObj = new Object();
+                            valueObj.value = currentValue;
+                            addKeyValueToRecord(newRecordId, fieldName, valueObj);
+                        } else if (typeof(currentValue) == 'string') {
+                            fieldName = key + "0";
+                            valueObj = new Object();
+                            valueObj.value = currentValue;
+                            addKeyValueToRecord(newRecordId, fieldName, valueObj);
+                        } else if (typeof(currentValue) == 'object') {
+                            if (key == "Restriction Information") {
+                                console.log(key);
+                                for (var n in currentValue) {
+                                    var val = currentValue[n];
+                                    val = JSON.parse(val);
+                                    for (subkey in val) {
+                                        fieldName = key + n + '.' + subkey + "0";
+                                        valueObj = new Object();
+                                        valueObj.value = val[subkey];
+                                        addKeyValueToRecord(newRecordId, fieldName, valueObj);
+                                    }
+                                }
+                            } else if (key == "Physical Media Information") {
+                                for (var n in currentValue) {
+                                    var val = currentValue[n];
+                                    val = JSON.parse(val);
+                                    for (subkey in val) {
+                                        fieldName = key + n + '.' + subkey + "0";
+                                        valueObj = new Object();
+                                        valueObj.value = val[subkey];
+                                        addKeyValueToRecord(newRecordId, fieldName, valueObj);
+                                    }
+                                }
+                            } else if (key == "Donor" || key == "Source") {
+                                var numPersons = 0;
+                                for (var n in currentValue) {
+                                    console.log(n);
+                                    var val = currentValue[n];
+                                    val = JSON.parse(val);
+                                    for (subkey in val) {
+                                        if (subkey == 'Email' || subkey == 'Phone') {
+                                            var numItems = 0;
+                                            for (n in val[subkey]) {
+                                                var fieldName = key + numPersons.toString() + '.' + subkey + numItems;
+                                                console.log(fieldName);
+                                                postObj = new Object()
+                                                postObj.value = val[subkey][n];
+                                                addKeyValueToRecord(newRecordId, fieldName, postObj);
+                                                numItems = numItems + 1;
+                                            }
+
+                                        } else if (subkey == 'First Name' || subkey == 'Last Name') {
+                                            var fieldName = key + numPersons.toString() + '.' + subkey + '0'
+                                            console.log(fieldName);
+                                            postObj = new Object()
+                                            postObj.value = val[subkey][0];
+                                            addKeyValueToRecord(newRecordId, fieldName, postObj);
+                                        } else if (subkey == 'Address Information') {
+                                            var numaddresses = 0;
+                                            for (n in val[subkey]) {
+                                                console.log("numperson=" + numPersons.toString())
+                                                console.log("numaddress=" + numaddresses);
+                                                var fieldNameBase = key + numPersons.toString() + '.' + subkey + numaddresses.toString();
+                                                for (var addressDataBit in val[subkey][n]) {
+                                                    if (addressDataBit != 'num') {
+                                                        var fieldName = fieldNameBase + '.' + addressDataBit + '0';
+                                                        console.log(fieldName);
+                                                        posValue = val[subkey][n][addressDataBit];
+                                                        if (postValue[0] != "")
+                                                        {
+                                                            var postObj = new Object();
+                                                            postObj.value = val[subkey][n][addressDataBit];
+                                                            addKeyValueToRecord(newRecordId, fieldName, postObj);
+                                                        }
+                                                    }
+                                                }
+                                                numaddresses = numaddresses + 1;
+                                            }
+                                        }
+                                    }
+                                    numPersons = numPersons + 1;
+                                }
+
+                            }
+                        }
+                    }
+                    var newCategoryObj = new Object();
+                    newCategoryObj.record_identifier = newRecordId
+                    var addedToCategory = addRecordToCategory('AccessionRecord', newCategoryObj)
+                    console.log(newRecordId);
+                    localStorage.clear();
+                    location.replace("receipt.html?search=" + newRecordId + 'rtype=accesssion');
+                    return false;
+                } else {
+                    console.log("nope");
+                }
+            });
+        });
+        $(function() {
+            $("#start-over").click(function() {
+                doCancelButton();
+            });
+        });
+
+        $(function() {
+            var availableTags = getCollectionTitleList() //getRecordsByCategory('Collection').responseJSON.data.record_identifiers;
+            $('input[name="collection-title"]').autocomplete({
+                source: availableTags
+            });
+        });
+
+        $(function() {
+            $('input[name="gift-acknowledgement-received"]').datepicker();
+        });
+
+        $(function() {
+            $('input[name="receipt-letter-sent"]').datepicker();
+        });
+
+        $(function() {
+            $('input[name="date-files-received"]').datepicker();;
+        });
+
+        $(function() {
+            $('input[name="date-materials-received"]').datepicker();;
+        });
+
+    });
+    </script>
+</body>
+
+</html>
