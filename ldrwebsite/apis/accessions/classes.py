@@ -1,6 +1,6 @@
 
 from os import listdir
-from os.path import exists, join, isdir
+from os.path import exists, join, isdir, sep
 from flask import send_file, jsonify
 from flask_restful import Resource
 
@@ -35,15 +35,11 @@ class BrowseAccessions(Resource):
         """
         from flask import current_app
         all_accessions = self._find_accessions(current_app.config["LONGTERMSTORAGE_PATH"])
-        output = {}
+        output = {'accessions':[]}
         for n_item in all_accessions:
             is_it_done = exists(join(n_item, "arf/admin", "WRITE_FINISHED.json"))
-            an_id = n_item.replace(current_app.config["LONGTERMSTORAGE_PATH"], "").replace("/", "")
-            output[an_id] = {"accession records": join("/", an_id, "recordinfo"),
-                             "legal notes": join("/", an_id, "legalinfo"),
-                             "admin notes": join("/", an_id, "recordinfo"),
-                             "identifier":an_id,
-                             "transferred":is_it_done}
+            an_id = n_item.replace(current_app.config["LONGTERMSTORAGE_PATH"], "").replace(sep, "")
+            output['accessions'].append(an_id)
         resp = APIResponse("success", data=output)
         return jsonify(resp.dictify())
 

@@ -10,9 +10,9 @@ from flask_restful import Resource, Api
 from pypairtree.utils import identifier_to_path
 from uchicagoldrapicore.responses.apiresponse import APIResponse
 
-INVENTORY = Blueprint("inventory", __name__, template_folder='./templates')
+INVENTORY = Blueprint("inventory", __name__, url_prefix="/inventory", template_folder='./templates')
 
-@INVENTORY.route("/inventories")
+@INVENTORY.route("/")
 def list_inventories():
     """a method for getting inventories available to the ldr
     """
@@ -21,7 +21,7 @@ def list_inventories():
     data = load(open(filepath, 'r'))
     return render_template("browse.html", inventory_list=data)
 
-@INVENTORY.route("/inventories/<string:accession_id>")
+@INVENTORY.route("/<string:accession_id>")
 def get_an_inventory(accession_id):
     """a method for getting a specific inventory availalbe to the ldr
     """
@@ -39,7 +39,7 @@ def get_an_inventory(accession_id):
     else:
         return abort(404)
 
-@INVENTORY.route("/inventories/<string:accession_id>/<string:page_num>")
+@INVENTORY.route("/<string:accession_id>/<string:page_num>")
 def get_an_inventory_page(accession_id, page_num):
     """a method for getting a page inventory file
     """

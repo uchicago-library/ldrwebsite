@@ -1,7 +1,7 @@
 
 from flask import Blueprint, render_template
 
-ACQUISITIONS = Blueprint("restriction_change", __name__, static_folder="static",
+ACQUISITIONS = Blueprint("acquisitions", __name__, static_folder="static",
                          template_folder="./templates", url_prefix="/acquisitions")
 
 @ACQUISITIONS.route("/", methods=["GET"])

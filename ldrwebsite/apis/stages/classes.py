@@ -1,6 +1,9 @@
 
+from os import listdir
+from flask import current_app, jsonify
 from flask_restful import Resource
-from uchicagoldrapicore.lib import APIResponse
+
+from uchicagoldrapicore.responses.apiresponse import APIResponse
 
 class BrowseStages(Resource):
     def get(self):
@@ -15,4 +18,3 @@ class BrowseStages(Resource):
     def _find_stages(self, a_path):
         for n in listdir(a_path):
             yield n
-

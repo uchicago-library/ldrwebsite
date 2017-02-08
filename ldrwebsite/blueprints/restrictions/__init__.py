@@ -6,9 +6,9 @@ from .utils import new_rights_extension, get_ldr_object_filepath,\
     get_premis_record, extract_record_rights, wrap_rightsExtensions,\
     deactivate_group_of_rights_extensions
 
-RESTRICTION_CHANGE = Blueprint("restriction_change", __name__, template_folder="./templates")
+RESTRICTION_CHANGE = Blueprint("restriction_change", __name__, template_folder="./templates", url_prefix="/modify_restrictions")
 
-@RESTRICTION_CHANGE.route("/restrictions/", methods=["GET", "POST"])
+@RESTRICTION_CHANGE.route("/", methods=["GET", "POST"])
 def select_an_object():
     """a method to return a form for entering an object to change restrictions of
     """
@@ -22,7 +22,7 @@ def select_an_object():
     else:
         return render_template("front.html")
 
-@RESTRICTION_CHANGE.route("/restrictions/change/<string:accessionid>/<string:objid>",
+@RESTRICTION_CHANGE.route("/change/<string:accessionid>/<string:objid>",
                           methods=["GET", "POST"])
 def make_a_change(accessionid, objid):
     """a method to process a form to change the active restriction on a particular object

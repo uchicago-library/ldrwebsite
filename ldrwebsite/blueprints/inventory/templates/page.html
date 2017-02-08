@@ -18,8 +18,8 @@
     {% for file in file_list %}
         <dt>{{ file["name"] }}</dt>
         <dd>
-            <a href="{{ file["content"] }}">content</a>&nbsp;
-            <a href="{{ file["premis"] }}">premis</a>&nbsp;
+            <a href="{{ url_for("restricted_resolver.getcontent", accession_id=file["accessionid"], object_id=file["objid"])}}">content</a>&nbsp;
+            <a href="{{ url_for("restricted_resolver.getpremis", accession_id=file["accessionid"], object_id=file["objid"]) }}">premis</a>&nbsp;
             <a href="{{ url_for("restriction_change.make_a_change", accessionid=file["accessionid"], objid=file["objid"]) }}">change restriction</a>
         </dd>
     {% endfor %}
