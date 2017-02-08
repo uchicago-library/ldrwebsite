@@ -467,7 +467,7 @@ $(document).ready(function() {
 			aRestrictionObj["Restriction Comment"] = restrictionObj["Restriction Comment"];
 		    }
 		    
-                    newObj[parseInt(r)] = restrictionObj[r];
+                newObj[parseInt(r)] = restrictionObj[r];
                 }
                 localStorage.setItem("Restriction Information", JSON.stringify(newObj));
             }
@@ -654,7 +654,7 @@ $(document).ready(function() {
         form.setAttribute("id", correctTerm + "-form");
         form.setAttribute("data-toggle", "validator");
         form.setAttribute("role", "form");
-        form.setAttribute("action", "form.html?action=" + localStorage.getItem("action"));
+        form.setAttribute("action", "/acquisitions/form?action=" + localStorage.getItem("action"));
         form.setAttribute("form", "form-horizontal");
 
         var addPhone = document.createElement("a");
@@ -807,7 +807,7 @@ $(document).ready(function() {
         var fieldset = document.createElement("fieldset");
 
         var addDonor = document.createElement("a");
-        addDonor.setAttribute("href", "#");
+        addDonor.setAttribute("href", "action=donor");
         addDonor.setAttribute("id", "new-donor-button");
         addDonor.setAttribute("class", "btn btn-primary");
         addDonor.setAttribute("role", "button");
@@ -921,7 +921,7 @@ $(document).ready(function() {
         form.setAttribute("id", "acquisition-form");
         form.setAttribute("data-toggle", "validator");
         form.setAttribute("role", "form");
-        form.setAttribute("action", "form.html?action=acquisition");
+        form.setAttribute("action", "/acquisitions/form");
         form.setAttribute("form", "form-horizontal");
         var addDonor = document.createElement("a");
         addDonor.setAttribute("href", "#");
@@ -1025,7 +1025,7 @@ $(document).ready(function() {
         form.setAttribute("id", "physmedia-form");
         form.setAttribute("data-toggle", "validator");
         form.setAttribute("role", "form");
-        form.setAttribute("action", "form.html?action=" + localStorage.getItem("action"));
+        form.setAttribute("action", "/acquisitions/form?action=" + localStorage.getItem("action"));
         form.setAttribute("form", "form-horizontal");
         var fieldset = document.createElement("fieldset");
         var legend = document.createElement("legend");
@@ -1047,7 +1047,7 @@ $(document).ready(function() {
         form.setAttribute("id", "restriction-form");
         form.setAttribute("data-toggle", "validator");
         form.setAttribute("role", "form");
-        form.setAttribute("action", "form.html?action=" + localStorage.getItem("action"));
+        form.setAttribute("action", "/acquisitions/form?action=" + localStorage.getItem("action"));
         form.setAttribute("form", "form-horizontal");
         var fieldset = document.createElement("fieldset");
         var legend = document.createElement("legend");
@@ -1219,9 +1219,9 @@ $(document).ready(function() {
         var action = localStorage.getItem("action");
         var item = localStorage.getItem("acquisitionBeingCompleted");
         if (item !== null) {
-            var newurl = "form.html?action=" + action + "&item=" + item;
+            var newurl = "/acquisitions/form?action=" + action + "&item=" + item;
         } else {
-            newurl = "form.html?action=" + localStorage.getItem("action");
+            newurl = "/acquisitions/form?action=" + localStorage.getItem("action");
         }
         form.setAttribute("action", newurl);
     }
@@ -1265,9 +1265,9 @@ $(document).ready(function() {
         var action = localStorage.getItem("action");
         var item = localStorage.getItem("acquisitionBeingCompleted");
         if (item !== null) {
-            var newurl = "form.html?action=" + action + "&item=" + item;
+            var newurl = "/acquisitions/form?action=" + action + "&item=" + item;
         } else {
-            newurl = "form.html?action=" + localStorage.getItem("action");
+            newurl = "/acquisitions/form?action=" + localStorage.getItem("action");
         }
         form.setAttribute("action", newurl);
     }
@@ -1359,9 +1359,9 @@ $(document).ready(function() {
         var action = localStorage.getItem("action");
         var item = localStorage.getItem("acquisitionBeingCompleted");
         if (item !== null) {
-            var newurl = "form.html?action=" + action + "&item=" + item;
+            var newurl = "/acquisitions/form?action=" + action + "&item=" + item;
         } else {
-            newurl = "form.html?action=" + localStorage.getItem("action");
+            newurl = "/acquisitions/form?action=" + localStorage.getItem("action");
         }
         form.setAttribute("action", newurl);
     }
@@ -1421,7 +1421,7 @@ $(document).ready(function() {
                 itemNum = itemNum.toString();
 
                 var editButton = document.createElement("a");
-                editButton.setAttribute("href", "form.html?action=" + editType + "&item=" + itemNum);
+                editButton.setAttribute("href", "/acquisitions/form?action=" + editType + "&item=" + itemNum);
                 editButton.setAttribute("class", "btn btn-primary btn-sm");
                 editButton.setAttribute("role", "button")
                 editButton.setAttribute("id", "edit-" + editType + (i + 1).toString());
@@ -1605,7 +1605,7 @@ $(document).ready(function() {
             if (!e.isDefaultPrevented()) {
                 var newRecordID = saveMajorForm("accession")
         	localStorage.clear();
-		this.setAttribute("action", "receipt.html?id=" + newRecordID + "&action=accession");
+		this.setAttribute("action", "/acquisitions/receipt?id=" + newRecordID + "&action=accession");
             }
         });
     });
@@ -1615,8 +1615,7 @@ $(document).ready(function() {
             if (!e.isDefaultPrevented()) {
                 var newRecordID = saveMajorForm("acquisition");
 		localStorage.clear();
-		this.setAttribute("action", "receipt.html?id=" + newRecordID + "&action=acquisition");
-               	 
+		this.setAttribute("action", "/acquisitions/receipt?id=" + newRecordID + "&action=acquisition");
             }
         });
     });
@@ -1624,7 +1623,7 @@ $(document).ready(function() {
     $(function() {
         $("a[name='cancel']").click(function() {
             var cancelAction = localStorage.getItem("action");
-            var newurl = "form.html?action=" + cancelAction;
+            var newurl = "/acquisitions/form?action=" + cancelAction;
             if (localStorage.getItem("acquisitionBeingCompleted") !== null) {
                 newurl += "&item=" + localStorage.getItem("acquisitionBeingCompleted");
             }
@@ -1635,7 +1634,7 @@ $(document).ready(function() {
     $(function() {
         $("#new-donor-button").click(function() {
             var last = localStorage.getItem("action");
-            location.replace("form.html?action=donor&last=" + last);
+            location.replace("/acquisitions/form?action=donor&last=" + last);
         });
     });
 
@@ -1645,7 +1644,7 @@ $(document).ready(function() {
             if (confirmAction == true) {
                 var cancelAction = localStorage.getItem("action");
                 localStorage.clear();
-                location.replace("form.html?action=" + cancelAction);
+                location.replace("/acquisitions/form?action=" + cancelAction);
             }
         });
     });
@@ -1653,20 +1652,20 @@ $(document).ready(function() {
     $(function() {
         $("#new-source-button").click(function() {
             var last = localStorage.getItem("action");
-            location.replace("form.html?action=source&last=" + last);
+            location.replace("/acquisitions/form?action=source&last=" + last);
         });
     });
 
     $(function() {
         $("#new-restriction-button").click(function() {
             var last = localStorage.getItem("action");
-            location.replace("form.html?action=restriction&last=" + last);
+            location.replace("/acquisitions/form?action=restriction&last=" + last);
         });
     });
 
     $(function() {
         $("#new-physmedia-button").click(function() {
-            location.replace("form.html?action=physmedia");
+            location.replace("/acquisitions/form?action=physmedia");
         });
     });
 
