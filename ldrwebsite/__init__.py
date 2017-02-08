@@ -8,8 +8,8 @@ from .blueprints.restrictions import RESTRICTION_CHANGE
 from .blueprints.dashboard import DASHBOARD
 from .blueprints.acquisitions import ACQUISITIONS
 
-# from blueprints.accessions import ACCESSIONS
-# from blueprints.stages import STAGES
+from blueprints.accessions import ACCESSIONS
+from blueprints.stages import STAGES
 
 def retrieve_resource_string(resource_path, pkg_name=None):
     """
@@ -34,8 +34,8 @@ CONFIG.read_string(CONFIG_STRING)
 for n_item in CONFIG["CONFIG"]:
     APP.config[n_item.upper()] = CONFIG["CONFIG"][n_item]
 
-#APP.register_blueprint(INVENTORY)
-#APP.register_blueprint(RESTRICTION_CHANGE)
+APP.register_blueprint(INVENTORY)
+APP.register_blueprint(RESTRICTION_CHANGE)
 APP.register_blueprint(DASHBOARD)
 APP.register_blueprint(ACQUISITIONS)
 APP.run()

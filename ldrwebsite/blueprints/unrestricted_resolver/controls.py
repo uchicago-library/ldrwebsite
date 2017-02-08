@@ -1,8 +1,9 @@
-
+from flask import abort, request, send_file
 from flask_restful import Resource
 
 from ldrwebsite.controls.pypremis_convenience import *
 from ldrwebsite.controls.resolver_convenience import *
+from uchicagoldrapicore.responses.apiresponse import APIResponse
 
 class GetContent(Resource):
     """a class for a particular byte stream in the ldr
@@ -15,6 +16,14 @@ class GetContent(Resource):
         2. premisid (str): a uuid representing a particular object in the ldr
         """
         from flask import current_app
+        whitelist_opened = open(current_app.config["WHITELIST"], "r")
+        check = False
+        for line in whitelist_opened:
+            if line.strip() == join(arkid, premisid):
+                check = True
+                break
+        if not check:
+             return abort(404,  message="could not find the object {}".format(join(arkid, premisid)))
         try:
             user = "authorized" if "private" in request.environ.get("REQUEST_URI") else "anonymous"
             event_category = "anonymous download" if user == "anonymous" else "authorized download"
@@ -29,36 +38,10 @@ class GetContent(Resource):
                 make_download_event(record_path, event_category,
                                     datetime.now().isoformat(), "SUCCESS",
                                     user, data[1].objid)
-                stderr.write("{}\n".format(mimetype))
-                stderr.write("{}\n".format(attach_filename))
-                resp = send_file(data[1].content_loc.replace("premis.xml", "content.file"),
+                resp = send_file(data[1].content_loc,
                                  as_attachment=False,
                                  attachment_filename=attach_filename,
                                  mimetype=mimetype)
-                return resp
-        except Exception as e:
-            return jsonify(_EXCEPTION_HANDLER.handle(e).dictify())
-
-class GetPremis(Resource):
-    """a class for retrieving the premis reocrd
-    """
-    def get(self, arkid, premisid):
-        """a method to to retrieve the live premis record for a given object
-
-        __Args__
-        1. arkid (str): an accession identifier
-        2. premisid (str): an object identifier
-        """
-        from flask import current_app
-        try:
-            data = get_data_half_of_object(arkid, premisid, current_app.config["LIVEPREMIS_PATH"])
-            if not data:
-                return abort(404, message="{} premis record cannot be found.".format(join(arkid, premisid)))
-            else:
-                resp = send_file(data[0],
-                                 as_attachment=False,
-                                 attachment_filename=premisid + ".xml",
-                                 mimetype="application/xml")
                 return resp
         except Exception as e:
             return jsonify(_EXCEPTION_HANDLER.handle(e).dictify())
