@@ -11,21 +11,20 @@ def select():
     from flask import current_app
     summary = SummarizeState(current_app.config.get("LONGTERMSTORAGE_PATH"),
                              current_app.config.get("STAGING_PATH"),
-                             current_app.config.get("INVENTORY_PATH"))
+                             current_app.config.get("LIVEPREMIS_PATH"))
     return render_template("index.html", stages=summary.staged,
                            inventoried=summary.inventoried,
-                           transfers=summary.in_transfer,
                            pending=summary.non_inventoried)
 
+@DASHBOARD.route("/dashboard/<string:accession_id>")
 @DASHBOARD.route("/dashbord/<string:accessionid>", methods=["GET"])
 def change(accessionid):
     """a function to allow users to view details about a particular archive
     """
     from flask import current_app
-       
-    # record_info = SummarizeAccession(current_app.config.get("LONGTERMSTORAGE_PATH"),
-    #                                  accessionid)
-    # inventory_info = InventorySummarizer(current_app.config.get("INVENTORY_PATH"),
-    #                                      accessionid)
-    # return render_template("record.html", information=record_info,
-    #                        inventory=inventory_info)
+    record_info = SummarizeAccession(current_app.config.get("LONGTERMSTORAGE_PATH"),
+                                     accessionid)
+    inventory_info = InventorySummarizer(current_app.config.get("INVENTORY_PATH"),
+                                         accessionid)
+    return render_template("record.html", information=record_info,
+                           inventory=inventory_info)

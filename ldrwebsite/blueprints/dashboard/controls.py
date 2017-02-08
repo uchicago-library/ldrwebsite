@@ -1,4 +1,4 @@
-from os.path import exists, join, isdir
+from os.path import join, isdir
 from os import listdir
 from json import load
 
@@ -9,13 +9,9 @@ class SummarizeState(object):
     """
     def __init__(self, ltsp, sp, invp):
         self.staged = self._find_stages(sp)
-        self.archives = self._find_archives(ltsp)
-        self.in_transfer = self._find_incomplete_transfers(ltsp)
-
         self.inventoried = self._find_inventoried(invp)
-        self.non_inventoried = [self._find_difference([x.split(ltsp)[1].split("arf")[0]\
-                                                        for x in self._find_archives(ltsp)],
-                                                      self._find_inventoried(invp))]
+        self.non_inventoried = self._find_difference(self._find_archives(ltsp),
+                                                     self._find_inventoried(invp))
 
     def _find_stages(self, stage_path):
         output = []
@@ -27,26 +23,13 @@ class SummarizeState(object):
         generated = self._make_a_generator_with_breaks(lts, condition=lambda x: x.endswith("arf"))
         return [x for x in generated]
 
-    def _find_incomplete_transfers(self, ltsp):
-        out = []
-        for a_path  in self.archives:
-            write_finished_filepath = join(a_path, "admin", "WRITE_FINISHED.json")
-            if not exists(write_finished_filepath):
-                out.append(a_path.split(ltsp)[1].split("arf")[0])
-        return out
-
     def _find_inventoried(self, invp):
         completed_inventory_file = join(invp, "completed.json")
         completd_json_data = load(open(completed_inventory_file, "r"))
         return [x for x in completd_json_data]
 
     def _find_difference(self, big_list, small_list):
-        out = []
-        for x in big_list:
-            if x not in small_list:
-                y = x.replace('/', '')
-                out.append(y)
-        return out
+        return [x for x in big_list if x not in small_list]
 
     def _make_a_generator(self, a_path, condition=lambda x: x is x):
         for n_thing in listdir(a_path):
@@ -62,6 +45,7 @@ class SummarizeState(object):
                     yield cur_path
                     break
                 yield from self._make_a_generator_with_breaks(cur_path, condition=condition)
+
 
 class SummarizeAccession(object):
     """a class
