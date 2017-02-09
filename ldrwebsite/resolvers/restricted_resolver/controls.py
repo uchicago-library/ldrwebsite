@@ -6,6 +6,7 @@ from datetime import datetime
 from ldrwebsite.controls.pypremis_convenience import *
 from ldrwebsite.controls.resolver_convenience import *
 
+from pypairtree.utils import identifier_to_path
 from uchicagoldrapicore.responses.apiresponse import APIResponse
 from uchicagoldrapicore.lib.apiexceptionhandler import APIExceptionHandler
 
@@ -27,10 +28,10 @@ class GetContent(Resource):
         try:
             user = "authorized" if "private" in request.environ.get("REQUEST_URI") else "anonymous"
             event_category = "anonymous download" if user == "anonymous" else "authorized download"
-            data = get_object_halves(arkid, premisid,
-                                     current_app.config["LONGTERMSTORAGE_PATH"],
+            arkid_path = str(identifier_to_path(arkid))
+            premisid_path = str(identifier_to_path(premisid))
+            data = get_object_halves(arkid, premisid, current_app.config["LONGTERMSTORAGE_PATH"],
                                      current_app.config["LIVEPREMIS_PATH"])
-            stderr.write("{}\n".format(str(data)))
             if not data:
                 return jsonify(APIResponse("fail",
                                            errors=["{} cannot be found.".\
@@ -50,8 +51,8 @@ class GetContent(Resource):
                                  attachment_filename=attach_filename,
                                  mimetype=mimetype)
                 return resp
-        except Exception as e:
-            return jsonify(_EXCEPTION_HANDLER.handle(e).dictify())
+        except Exception as error:
+            return jsonify(_EXCEPTION_HANDLER.handle(error).dictify())
 
 class GetPremis(Resource):
     """a class for retrieving the premis reocrd

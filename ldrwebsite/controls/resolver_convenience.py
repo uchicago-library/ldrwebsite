@@ -75,8 +75,6 @@ def get_object_halves(arkid, premisid, lts_path, lp_path):
     """
     content = get_data_half_of_object(arkid, premisid, lts_path)
     data = get_data_half_of_object(arkid, premisid, lp_path)
-    print(content)
-    print(data)
     if content and data:
         return (content[0], data[1])
     else:

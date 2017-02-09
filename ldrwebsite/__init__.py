@@ -1,15 +1,14 @@
 
 from configparser import ConfigParser
-from flask import Flask
 from os.path import abspath, relpath
+from flask import Flask, redirect, session
+from flask_sso import SSO
 
 from .blueprints.inventory import INVENTORY
 from .blueprints.restrictions import RESTRICTION_CHANGE
 from .blueprints.dashboard import DASHBOARD
 from .blueprints.acquisitions import ACQUISITIONS
-
 from .resolvers.restricted_resolver import RESTRICTED_RESOLVER
-
 #from .blueprints.unrestricted_resolver import UNRESTRICTED_RESOLVER
 
 from .apis.accessions import ACCESSIONS
@@ -31,9 +30,28 @@ def retrieve_resource_string(resource_path, pkg_name=None):
     return resource_string(Requirement.parse(pkg_name), resource_path)
 
 APP = Flask(__name__)
+EXT = SSO(APP)
+
 CONFIG_STRING = retrieve_resource_string("config/config.ini").decode("utf-8")
 CONFIG = ConfigParser()
 CONFIG.read_string(CONFIG_STRING)
+
+SSO_ATTRIBUTE_MAP = {
+    'ADFS_AUTHLEVEL': (False, 'authlevel'),
+    'ADFS_GROUP': (True, 'group'),
+    'ADFS_LOGIN': (True, 'nickname'),
+    'ADFS_ROLE': (False, 'role'),
+    'ADFS_EMAIL': (True, 'email'),
+    'ADFS_IDENTITYCLASS': (False, 'external'),
+    'HTTP_SHIB_AUTHENTICATION_METHOD': (False, 'authmethod'),
+}
+
+APP.config['SSO_ATTRIBUTE_MAP'] = SSO_ATTRIBUTE_MAP
+
+@EXT.login_handler
+def login_callback(user_info):
+    """Store information in session."""
+    session['user'] = user_info
 
 for n_item in CONFIG["CONFIG"]:
     APP.config[n_item.upper()] = CONFIG["CONFIG"][n_item]
