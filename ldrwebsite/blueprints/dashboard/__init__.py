@@ -2,10 +2,10 @@ from flask import Blueprint, render_template
 
 from .controls import SummarizeState, SummarizeAccession, InventorySummarizer
 
-DASHBOARD = Blueprint("dashboard", __name__, template_folder="./templates")
+DASHBOARD = Blueprint("dashboard", __name__, template_folder="./templates", url_prefix="/dashboard")
 
-@DASHBOARD.route("/dashboard", methods=["GET"])
-def select():
+@DASHBOARD.route("/", methods=["GET"])
+def thirty_foot_view():
     """a function to allow users to browse the archives and stages in the ldr
     """
     from flask import current_app
@@ -16,9 +16,8 @@ def select():
                            inventoried=summary.inventoried,
                            pending=summary.non_inventoried)
 
-@DASHBOARD.route("/dashboard/<string:accession_id>")
 @DASHBOARD.route("/dashbord/<string:accessionid>", methods=["GET"])
-def change(accessionid):
+def close_up_view(accessionid):
     """a function to allow users to view details about a particular archive
     """
     from flask import current_app
@@ -27,4 +26,5 @@ def change(accessionid):
     inventory_info = InventorySummarizer(current_app.config.get("INVENTORY_PATH"),
                                          accessionid)
     return render_template("record.html", information=record_info,
+                           accessionid=accessionid,
                            inventory=inventory_info)

@@ -1,6 +1,10 @@
 
-from os.path import join
+import re
+from mimetypes import guess_extension
+from os.path import join, exists
 from pypairtree.utils import identifier_to_path
+
+from .pypremis_convenience import *
 
 def make_download_event(path_to_record, event_category, event_date, event_status, user, objid):
     """a functino to create a Premis event node defined with the
@@ -17,9 +21,11 @@ def make_download_event(path_to_record, event_category, event_date, event_status
         event_message = "there was an {} of this content".format(event_category)
     else:
         event_message = "there was a {} of this content".format(event_category)
-    new_download_event = build_a_premis_event(event_category, event_date, event_status, event_message, user, objid, agent_type="person")
+    new_download_event = build_a_premis_event(event_category, event_date, event_status,
+                                              event_message, user, objid, agent_type="person")
     was_it_written = add_event_to_premis_record(path_to_record, new_download_event)
-    new_download_event = build_a_premis_event(event_category, event_date, event_status, event_message, user, objid, agent_type="person")
+    new_download_event = build_a_premis_event(event_category, event_date, event_status,
+                                              event_message, user, objid, agent_type="person")
     was_it_written = add_event_to_premis_record(path_to_record, new_download_event)
     return was_it_written
 
@@ -33,7 +39,8 @@ def get_data_half_of_object(arkid, premisid, lp_path):
     """
     arkid_path = str(identifier_to_path(arkid))
     premisid_path = str(identifier_to_path(premisid))
-    path_to_premis = join(lp_path, arkid_path,"arf", "pairtree_root", premisid_path, "arf", "premis.xml")
+    path_to_premis = join(lp_path, arkid_path, "arf", "pairtree_root",
+                          premisid_path, "arf", "premis.xml")
     if exists(path_to_premis):
         return (path_to_premis, extract_identity_data_from_premis_record(path_to_premis))
     else:
@@ -49,7 +56,7 @@ def get_content_half_of_object(arkid, premisid, lts_path):
     """
     arkid_path = str(identifier_to_path(arkid))
     premisid_path = str(identifier_to_path(premisid))
-    path_to_content = join(lts_path, arkid_path,"arf",
+    path_to_content = join(lts_path, arkid_path, "arf",
                            "pairtree_root", premisid_path,
                            "arf", "content.file")
     if exists(path_to_content):
@@ -68,6 +75,8 @@ def get_object_halves(arkid, premisid, lts_path, lp_path):
     """
     content = get_data_half_of_object(arkid, premisid, lts_path)
     data = get_data_half_of_object(arkid, premisid, lp_path)
+    print(content)
+    print(data)
     if content and data:
         return (content[0], data[1])
     else:
@@ -77,7 +86,8 @@ def get_an_attachment_filename(data_bit):
     """a function to construct the filename for an attachment sent through the web request
 
     __Args__
-    1. data_bit (namedtuple): a namedtuple with the object identifier for the bytestream being passed as
+    1. data_bit (namedtuple): a namedtuple with the object identifier for the
+                              bytestream being passed as
                               "objid" property and the mimetype of that bytestream passed as the
                               "mimetype" property.
     """

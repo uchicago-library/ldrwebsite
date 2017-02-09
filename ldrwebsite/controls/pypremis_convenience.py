@@ -1,8 +1,13 @@
 from collections import namedtuple
+
 from os import makedirs
 from os.path import abspath, dirname, exists, join
 from uuid import uuid4
 from sys import stderr
+from json import dumps, loads
+from urllib.parse import ParseResult
+from urllib.request import urlopen, Request
+import requests
 
 from pypairtree.utils import identifier_to_path
 from pypremis.lib import PremisRecord
@@ -79,7 +84,7 @@ def add_event_to_an_agent(event_id, identifier=None, agent_name=None):
             agent_id = check[1][0].identifier
         else:
              return ("too many options with that name", check[1])
-    elif identifer:
+    elif identifier:
         agent_id = identifier.strip()
     url = construct_url_to_agent_events(agent_id)
     package_post_data_for_new_linked_event(event_id)

@@ -3,7 +3,7 @@ from flask_restful import Api
 
 from .controls import GetContent, GetPremis
 
-RESTRICTED_RESOLVER = Blueprint("restricted_resolver", __name__)
+RESTRICTED_RESOLVER = Blueprint("restricted_resolver", __name__, url_prefix="/private")
 API = Api(RESTRICTED_RESOLVER)
 
 API.add_resource(GetContent, "/<string:accession_id>/<string:object_id>/content")

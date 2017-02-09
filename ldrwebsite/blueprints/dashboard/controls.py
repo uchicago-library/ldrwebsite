@@ -1,6 +1,8 @@
-from os.path import join, isdir
+from collections import namedtuple
+from os.path import join, isdir, sep
 from os import listdir
 from json import load
+from sys import stderr
 
 from pypairtree.utils import identifier_to_path
 
@@ -10,10 +12,9 @@ class SummarizeState(object):
     def __init__(self, ltsp, sp, invp):
         self.staged = self._find_stages(sp)
         self.inventoried = self._find_inventoried(invp)
-        self.non_inventoried = self._find_difference(self._find_archives(ltsp),
-                                                     self._find_inventoried(invp))
-        print(ltsp)
-        print(invp)
+        self.non_inventoried = [x.split(ltsp)[1].replace(sep, "")  for x in \
+            self._find_difference(self._find_archives(ltsp),
+                                  self._find_inventoried(invp))]
 
     def _find_stages(self, stage_path):
         output = []
@@ -75,8 +76,13 @@ class InventorySummarizer(object):
     """a class
     """
     def __init__(self, inv_path, a_id):
-        self.pages = self._find_pages(inv_path, a_id)
-        self.numfiles = self._find_total_files(inv_path, a_id)
+        index_file_path = join(inv_path, a_id, "index.json")
+        opened_file = open(index_file_path, "r")
+        data = load(opened_file)
+        opened_file.close()
+        self.numfiles = data["numfiles"]
+        self.pages = [namedtuple("pagerec", "page numfiles")(v["pagenum"], v["numfiles"])\
+                      for x, v in data["pages"].items()]
 
     def _find_pages(self, inv_path, a_id):
         specific_inventory = join(inv_path, a_id)
@@ -84,10 +90,9 @@ class InventorySummarizer(object):
         return pages
 
     def _find_total_files(self, inv_path, a_id):
-        index_file_path = join(inv_path, a_id)
+        index_file_path = join(inv_path, a_id, "index.json")
+        stderr.write("{}\n".format(index_file_path))
         opened_file = open(index_file_path, "r")
         data = load(opened_file)
-        file_count = 0
-        for key in data:
-            file_count += int(data[key]['numfiles'])
+        file_count = data["numfiles"]
         return file_count

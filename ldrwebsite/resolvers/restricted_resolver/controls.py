@@ -1,26 +1,40 @@
 
+from flask import jsonify, abort, send_file, request
 from flask_restful import Resource
+from datetime import datetime
 
 from ldrwebsite.controls.pypremis_convenience import *
 from ldrwebsite.controls.resolver_convenience import *
 
+from uchicagoldrapicore.responses.apiresponse import APIResponse
+from uchicagoldrapicore.lib.apiexceptionhandler import APIExceptionHandler
+
+_EXCEPTION_HANDLER = APIExceptionHandler()
+
 class GetContent(Resource):
     """a class for a particular byte stream in the ldr
     """
-    def get(self, arkid, premisid):
-        """a method to return either an error json result or a file matching the arkid and premisid submitted
+    def get(self, accession_id, object_id):
+        """a method to return either an error json result or a file
 
         __Args__
         1. arkid (str): a uuid representing a particular accession in the ldr
         2. premisid (str): a uuid representing a particular object in the ldr
         """
         from flask import current_app
+        arkid = accession_id
+        premisid = object_id
         try:
             user = "authorized" if "private" in request.environ.get("REQUEST_URI") else "anonymous"
             event_category = "anonymous download" if user == "anonymous" else "authorized download"
-            data = get_object_halves(arkid, premisid, current_app.config["LONGTERMSTORAGE_PATH"], current_app.config["LIVEPREMIS_PATH"])
+            data = get_object_halves(arkid, premisid,
+                                     current_app.config["LONGTERMSTORAGE_PATH"],
+                                     current_app.config["LIVEPREMIS_PATH"])
+            stderr.write("{}\n".format(str(data)))
             if not data:
-                return abort(404, message="{} cannot be found".format(join(arkid, premisid)))
+                return jsonify(APIResponse("fail",
+                                           errors=["{} cannot be found.".\
+                                           format(str(arkid + "/" + premisid))]).dictify())
             else:
                 attach_filename, mimetype = get_an_attachment_filename(data[1])
                 record_path = join(current_app.config["LIVEPREMIS_PATH"],
@@ -42,7 +56,7 @@ class GetContent(Resource):
 class GetPremis(Resource):
     """a class for retrieving the premis reocrd
     """
-    def get(self, arkid, premisid):
+    def get(self, accession_id, object_id):
         """a method to to retrieve the live premis record for a given object
 
         __Args__
@@ -50,10 +64,14 @@ class GetPremis(Resource):
         2. premisid (str): an object identifier
         """
         from flask import current_app
+        arkid = accession_id
+        premisid = object_id
         try:
             data = get_data_half_of_object(arkid, premisid, current_app.config["LIVEPREMIS_PATH"])
             if not data:
-                return abort(404, message="{} premis record cannot be found.".format(join(arkid, premisid)))
+                return jsonify(APIResponse("fail",
+                                           errors=["{} cannot be found.".\
+                                           format(str(arkid + "/" + premisid))]).dictify())
             else:
                 resp = send_file(data[0],
                                  as_attachment=False,

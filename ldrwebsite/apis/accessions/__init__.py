@@ -5,7 +5,7 @@ from flask_restful import Resource, Api
 from .classes import BrowseAccessions, GetASpecificAdminNote, GetASpecificLegalNote,\
                      GetASpecificRecord, GetAdminInfo, GetLegalInfo, GetRecords, GetAnAccession
 
-ACCESSIONS = Blueprint("accessions", __name__, url_prefix="/accessions")
+ACCESSIONS = Blueprint("accessions", __name__, url_prefix="/apis/accessions")
 API = Api(ACCESSIONS)
 
 API.add_resource(BrowseAccessions, "/")

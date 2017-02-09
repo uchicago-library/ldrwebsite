@@ -2,26 +2,27 @@
 
 {% block navigation_links %}
     <li class="nav-item">
-		<a class="nav-link" href="index.html">Back to Accessions List</a>
+		<a class="nav-link" href="{{ url_for("dashboard.thirty_foot_view") }}">Back to Accessions List</a>
 	</li>
 {% endblock %}
 
 {% block header %}
-
-<dl>
-{% for page in inventory_info.pages %}
-    <dt>
-        <a href="{{ url_for("inventory.get_an_inventory_page", accession_id=accessionid, page_num=page) }}">
-            Page {{ page }}
-        </a>
-    </dt>
-{% endfor %}
-</dl>
+<h2>Information about {{ accessionid }}</h2>
 
 {% for record in information.records %}
-    <pre>
-        {{ record }}
-    </pre>
+<pre>
+    {{ record }}
+</pre>
 {% endfor %}
+
+<h3>Links to inventory</h3>
+<dl>
+{% for page in inventory.pages %}
+
+<dt><a href="{{ url_for("inventory.get_an_inventory_page", accession_id=accessionid, page_num=page.page) }}">{{ page.page }}</a></dt>
+<dd>contains {{ page.numfiles }} file{% if (page.numfiles > 1) %}s{% endif %}</dd>
+
+{% endfor %}
+</dl>
 
 {% endblock %}
